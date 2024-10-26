@@ -1,3 +1,4 @@
+from tensorflow.keras import layers, models
 import tensorflow as tf
 
 class ExpertModel(tf.keras.Model):
@@ -5,11 +6,11 @@ class ExpertModel(tf.keras.Model):
     super(ExpertModel, self).__init__()
 
     # Convulation layers to extract features and patterns
-    self.conv1 = tf.keras.layers.Conv2d(32, (3, 3), activation='relu')
-    self.conv2 = tf.keras.layers.Conv2d(64, (3, 3), activation='relu')
-    self.conv3 = tf.keras.layers.Conv2d(128, (3, 3), activation='relu')
+    self.conv1 = tf.keras.layers.Conv2D(32, (3, 3), activation='relu')
+    self.conv2 = tf.keras.layers.Conv2D(64, (3, 3), activation='relu')
+    self.conv3 = tf.keras.layers.Conv2D(128, (3, 3), activation='relu')
 
-    # Flatten layer to 
+    # Flatten layer to 1D vector
     self.flatten = tf.keras.layers.Flatten()
 
     # Produce routing probabilities for each expert model
@@ -25,7 +26,7 @@ class ExpertModel(tf.keras.Model):
 
     x = self.flatten(x)
 
-    x = self.dense1(x)
+    x = self.dense(x)
 
     return self.output_layer(x)
   
