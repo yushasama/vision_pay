@@ -1,4 +1,4 @@
 # Vision Pay
 ## Introduction
 ## Resources
-[Computer Vision Pytorch](https://www.youtube.com/watch?v=cEjtxFcaAXE&list=PLTgRMOcmRb3NuchXdEjbg5yiD3Bx6LpFg&index=1) 
+[Computer Vision Pytorch](https://www.youtube.com/watch?v=wQ8BIBpya2k&list=PLQVvvaa0QuDfhTox0AjmQ6tvTgMBZBEXN) 
