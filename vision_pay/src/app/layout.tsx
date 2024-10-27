@@ -1,7 +1,9 @@
+// layout.tsx
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Navbar from "../../components/navbar"; // Adjust path as needed
 import "./globals.css";
-import Navbar from "../../components/navbar"; // Ensure this path is correct
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,11 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navbar /> 
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Navbar />
+        {/* Apply padding for navbar height and full width for content */}
+        <main className="pt-16 w-full">
+          {children}
+        </main>
       </body>
     </html>
   );

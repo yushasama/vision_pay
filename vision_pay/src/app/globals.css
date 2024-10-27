@@ -16,13 +16,13 @@
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background-color: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-}
-body {
-  background-image: url('/fruitBackground2.png'); /* Path to your image */
+
+  /* Background image styling */
+  background-image: url('/fruitBackground2.png');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* Optional: keeps the background fixed on scroll */
+  background-attachment: fixed;
   background-repeat: no-repeat;
 }
