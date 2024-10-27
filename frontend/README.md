@@ -5,6 +5,13 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 First, run the development server:
 
 ```bash
+# Install all dependencies
+npm install 
+# or
+pnpm install
+```
+
+```bash
 npm run dev
 # or
 yarn dev
@@ -12,6 +19,13 @@ yarn dev
 pnpm dev
 # or
 bun dev
+```
+
+```bash
+# If the above command does not work, run this commandline and try again
+pnpm run build
+# or
+npm run build
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
