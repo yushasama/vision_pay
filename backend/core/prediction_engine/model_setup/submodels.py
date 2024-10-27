@@ -14,6 +14,10 @@ class AppleExpert:
     device = '/GPU:0' if self.gpu_train and tf.config.list_physical_devices('GPU') else '/CPU:0'
 
     with tf.device(device):
+
+       # Display device in training output
+      print(f"Training AppleExpert on {device}")
+      
       self.model.fit(data, labels, epochs = epochs, batch_size = batch_size)
 
   def save_model(self, file_path="apple_expert.h5"):
@@ -32,6 +36,10 @@ class BananaExpert:
     device = '/GPU:0' if self.gpu_train and tf.config.list_physical_devices('GPU') else '/CPU:0'
 
     with tf.device(device):
+      
+      # Display device in training output
+      print(f"Training AppleExpert on {device}")
+
       self.model.fit(data, labels, epochs = epochs, batch_size = batch_size)
 
   def save_model(self, file_path="banana_expert.h5"):
@@ -50,6 +58,10 @@ class OrangeExpert:
     device = '/GPU:0' if self.gpu_train and tf.config.list_physical_devices('GPU') else '/CPU:0'
 
     with tf.device(device):
+            
+      # Display device in training output
+      print(f"Training AppleExpert on {device}")
+
       self.model.fit(data, labels, epochs = epochs, batch_size = batch_size)
 
   def save_model(self, file_path="orange_expert.h5"):
@@ -64,6 +76,10 @@ class MangoExpert:
     self.model.compile()
 
   def train(self, data, labels, epochs = epoch_count, batch_size = batch_size):
+    
+    # Display device in training output
+    print(f"Training AppleExpert on {device}")
+      
     device = '/GPU:0' if self.gpu_train and tf.config.list_physical_devices('GPU') else '/CPU:0'
 
     with tf.device(device):
