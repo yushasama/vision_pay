@@ -1,10 +1,11 @@
 from gating_network import GatingNetwork
 from expert_model import ExpertModel
 import tensorflow as tf
+from tensorflow.keras import Model
 from typing import List
 
 class MixtureOfExperts(tf.keras.Model):
-  def __init__(self, experts: List[ExpertModel] , gating_network: GatingNetwork) -> None:
+  def __init__(self, experts: List[Model] , gating_network: GatingNetwork) -> None:
     super().__init__()
 
     self.experts = experts

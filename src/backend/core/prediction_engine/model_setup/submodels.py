@@ -1,12 +1,15 @@
 from expert_model import ExpertModel
 
+epoch_count = 10
+batch_size = 32
+
 class AppleExpert:
   def __init__(self):
     self.model = ExpertModel()
     self.model.compile()  # Assuming compile is a method in ExpertModel
 
-  def train(self, data, labels, epochs=10, batch_size=32):
-    self.model.fit(data, labels, epochs=epochs, batch_size=batch_size)
+  def train(self, data, labels, epochs = epoch_count, batch_size = batch_size):
+    self.model.fit(data, labels, epochs = epochs, batch_size = batch_size)
 
   def save_model(self, file_path="apple_expert.h5"):
     self.model.save(file_path)
@@ -19,8 +22,8 @@ class BananaExpert:
     self.model = ExpertModel()
     self.model.compile()  # Assuming compile is a method in ExpertModel
 
-  def train(self, data, labels, epochs=10, batch_size=32):
-    self.model.fit(data, labels, epochs=epochs, batch_size=batch_size)
+  def train(self, data, labels, epochs = epoch_count, batch_size = batch_size):
+    self.model.fit(data, labels, epochs = epochs, batch_size = batch_size)
 
   def save_model(self, file_path="banana_expert.h5"):
     self.model.save(file_path)
@@ -33,8 +36,8 @@ class OrangeExpert:
     self.model = ExpertModel()
     self.model.compile()  # Assuming compile is a method in ExpertModel
 
-  def train(self, data, labels, epochs=10, batch_size=32):
-    self.model.fit(data, labels, epochs=epochs, batch_size=batch_size)
+  def train(self, data, labels, epochs = epoch_count, batch_size = batch_size):
+    self.model.fit(data, labels, epochs = epochs, batch_size = batch_size)
 
   def save_model(self, file_path="orange_expert.h5"):
     self.model.save(file_path)
@@ -47,8 +50,8 @@ class MangoExpert:
     self.model = ExpertModel()
     self.model.compile()
 
-  def train(self, data, labels, epochs=10, batch_size=32):
-    self.model.fit(data, labels, epochs=epochs, batch_size=batch_size)
+  def train(self, data, labels, epochs = epoch_count, batch_size = batch_size):
+    self.model.fit(data, labels, epochs = epochs, batch_size = batch_size)
 
   def save_model(self, file_path="mango_expert.h5"):
     self.model.save(file_path)

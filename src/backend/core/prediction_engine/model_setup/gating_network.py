@@ -11,14 +11,14 @@ class GatingNetwork(tf.keras.Model):
     )
     # Convulation layers to extract features and patterns
     self.conv1 = tf.keras.layers.Conv2D(16, (3,3), activation='relu')
-    self.conv1 = tf.keras.layers.Conv2D(32, (3,3), activation='relu')
-    self.conv1 = tf.keras.layers.Conv2D(64, (3,3), activation='relu')
+    self.conv2 = tf.keras.layers.Conv2D(32, (3,3), activation='relu')
+    self.conv3 = tf.keras.layers.Conv2D(64, (3,3), activation='relu')
 
     self.flatten = tf.keras.layers.Flatten()
 
-    self.dense = tf.keras.layers.dense(32, activation='relu')
+    self.dense = tf.keras.layers.Dense(32, activation='relu')
 
-    self.output_layer = tf.keras.layers.Dense(3, activation='softmax')
+    self.output_layer = tf.keras.layers.Dense(4, activation='softmax')
 
   def call(self, x):
     x = self.conv1(x)

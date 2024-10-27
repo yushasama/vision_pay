@@ -1,5 +1,5 @@
 from backend.utils.data_transform import preprocess_image_with_crop
-from submodels import AppleExpert
+from backend.core.prediction_engine.model_setup.submodels import AppleExpert
 from PIL import Image
 import numpy as np
 import os
@@ -25,4 +25,5 @@ apple_labels = np.full(
 )
 
 apple_expert = AppleExpert()
+apple_expert.train(apple_data, apple_labels)
 apple_expert.save_model("apple_expert.h5")

@@ -23,7 +23,7 @@ class ExpertModel(tf.keras.Model):
     self.dense = tf.keras.layers.Dense(64, activation='relu')
 
     # Output layer for probabilistic classification
-    self.output_layer = tf.keras.layers.Dense(2, activation='softmax')
+    self.output_layer = tf.keras.layers.Dense(4, activation='softmax')
 
   def call(self, x):
     x = self.conv1(x)
