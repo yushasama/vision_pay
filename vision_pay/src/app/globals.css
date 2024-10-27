@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+body {
+  background-image: url('/fruitBackground2.png'); /* Path to your image */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Optional: keeps the background fixed on scroll */
+  background-repeat: no-repeat;
+}

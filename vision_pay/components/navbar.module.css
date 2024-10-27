@@ -1,0 +1,39 @@
+/* navbar.module.css */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #e0ccb0;
+    color: white;
+}
+
+.navLeft {
+    display: flex;
+    align-items: center;
+}
+
+.navRight {
+    margin-right: 2rem;
+    font-size: 1.5rem;
+}
+
+.navLink {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.teamName {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    margin-left: 0.5rem;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    cursor: pointer; /* Makes the logo appear clickable */
+}
