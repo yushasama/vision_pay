@@ -26,8 +26,8 @@ def load_data():
 
 data, labels = load_data()
 
-def train_and_save_expert(expert, fruit_label, model_name, initial_epochs=5, full_epochs=10, batch_size=32):
-    # Define early stopping
+def train_and_save_expert(expert, fruit_label, model_name, initial_epochs=5, final_epochs=10, batch_size=32):
+    # Early stopping callback
     early_stopping = EarlyStopping(monitor='loss', patience=3, restore_best_weights=True)
 
     # Stage 1: Train on only the designated fruit data
@@ -38,12 +38,12 @@ def train_and_save_expert(expert, fruit_label, model_name, initial_epochs=5, ful
 
     # Stage 2: Train on full multi-class data
     print(f"Training {model_name} on full multi-class data.")
-    expert.train(data, labels, epochs=full_epochs, batch_size=batch_size, callbacks=[early_stopping])
+    expert.train(data, labels, epochs=final_epochs, batch_size=batch_size, callbacks=[early_stopping])
 
     # Save the trained expert model
     expert.save_model(f"{model_name}.h5")
 
-# Initialize and train each expert with early stopping
+# Initialize and train each expert
 apple_expert = AppleExpert(gpu_train=True)
 train_and_save_expert(apple_expert, fruit_label=class_labels["apple"], model_name="apple_expert")
 
