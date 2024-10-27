@@ -1,7 +1,9 @@
-from backend.core.prediction_engine.model_setup.submodels import AppleExpert, BananaExpert, OrangeExpert, MangoExpert
-from backend.utils.data_transform import preprocess_image_with_crop
+import logging
 import numpy as np
 import os
+from backend.core.prediction_engine.model_setup.submodels import AppleExpert, BananaExpert, OrangeExpert, MangoExpert
+from backend.utils.data_transform import preprocess_image_with_crop
+import tensorflow as tf
 
 dataset_paths = {
     "apple": os.path.join("model/dataset/apples"),
@@ -9,7 +11,6 @@ dataset_paths = {
     "orange": os.path.join("model/dataset/oranges"),
     "mango": os.path.join("model/dataset/mangos")
 }
-
 class_labels = {"apple": 0, "banana": 1, "orange": 2, "mango": 3}
 
 def load_data():
@@ -26,28 +27,47 @@ def load_data():
 data, labels = load_data()
 
 def train_and_save_expert(expert, fruit_label, model_name, initial_epochs=5, final_epochs=10, batch_size=32):
+    model_path = f"{model_name}.h5"
+    
+    # Check if the model already exists to prevent re-training
+    if os.path.exists(model_path):
+        logging.info(f"Model '{model_name}' already exists. Loading the saved model instead of re-training.")
+        expert.load_model(model_path)
+        return
+    
     # Stage 1: Train on only the designated fruit data
     fruit_data = data[labels == fruit_label]
     fruit_labels = labels[labels == fruit_label]
-    print(f"Training {model_name} on {fruit_label} data only.")
-    expert.train(fruit_data, fruit_labels, initial_epochs=initial_epochs, batch_size=batch_size)
-
+    logging.info(f"Training '{model_name}' on class label {fruit_label} data only.")
+    
+    # Early stopping callback
+    early_stopping_stage1 = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=3, restore_best_weights=True)
+    
+    expert.train(fruit_data, fruit_labels, initial_epochs=initial_epochs, batch_size=batch_size, callbacks=[early_stopping_stage1])
+    logging.info(f"Completed Stage 1 training for '{model_name}'.")
+    
     # Stage 2: Train on full multi-class data
-    print(f"Training {model_name} on full multi-class data.")
-    expert.train(data, labels, final_epochs=final_epochs, batch_size=batch_size)
-
+    logging.info(f"Training '{model_name}' on full multi-class data.")
+    
+    # Early stopping callback
+    early_stopping_stage2 = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=3, restore_best_weights=True)
+    
+    expert.train(data, labels, final_epochs=final_epochs, batch_size=batch_size, callbacks=[early_stopping_stage2])
+    logging.info(f"Completed Stage 2 training for '{model_name}'.")
+    
     # Save the trained expert model
-    expert.save_model(f"{model_name}.h5")
+    expert.save_model(model_path)
+    logging.info(f"Model '{model_name}' saved at '{model_path}'.")
 
-# Initialize and train each expert
-apple_expert = AppleExpert()
-train_and_save_expert(apple_expert, fruit_label=class_labels["apple"], model_name="apple_expert")
+def train_all_models():
+    experts = [
+        (AppleExpert(gpu_train=True), class_labels["apple"], "apple_expert"),
+        (BananaExpert(gpu_train=True), class_labels["banana"], "banana_expert"),
+        (OrangeExpert(gpu_train=True), class_labels["orange"], "orange_expert"),
+        (MangoExpert(gpu_train=True), class_labels["mango"], "mango_expert")
+    ]
+    
+    for expert, fruit_label, model_name in experts:
+        train_and_save_expert(expert, fruit_label, model_name)
 
-banana_expert = BananaExpert()
-train_and_save_expert(banana_expert, fruit_label=class_labels["banana"], model_name="banana_expert")
-
-orange_expert = OrangeExpert()
-train_and_save_expert(orange_expert, fruit_label=class_labels["orange"], model_name="orange_expert")
-
-mango_expert = MangoExpert()
-train_and_save_expert(mango_expert, fruit_label=class_labels["mango"], model_name="mango_expert")
+train_all_models()
