@@ -1,50 +1,49 @@
-from .expert_model import ExpertModel
-from tensorflow.keras.utils import custom_object_scope
+from tensorflow.keras import layers, models
 import tensorflow as tf
 
-class BaseExpert:
-    def __init__(self, model_name, gpu_train=False):
-        self.model_name = model_name
-        self.model = ExpertModel()
-        self.model.compile()
-        self.gpu_train = gpu_train
+class ExpertModel(tf.keras.Model):
+  def __init__(self):
+    super(ExpertModel, self).__init__()
 
-    def train(self, data, labels, initial_epochs=5, final_epochs=10, batch_size=32):
-        device = '/GPU:0' if self.gpu_train and tf.config.list_physical_devices('GPU') else '/CPU:0'
+    # Define input size
+    self.input_layer = layers.InputLayer(input_shape=
+      (224, 224, 3)
+    )
 
-        # Stage 1: Train on specific fruit data only
-        with tf.device(device):
-            print(f"Training {self.model_name} on {device} for Stage 1 (single-class data)")
-            fruit_data = data[labels == 0]
-            fruit_labels = labels[labels == 0]
-            self.model.fit(fruit_data, fruit_labels, epochs=initial_epochs, batch_size=batch_size)
+    # Convulation layers to extract features and patterns
+    self.conv1 = tf.keras.layers.Conv2D(32, (3, 3), activation='relu')
+    self.conv2 = tf.keras.layers.Conv2D(64, (3, 3), activation='relu')
+    self.conv3 = tf.keras.layers.Conv2D(128, (3, 3), activation='relu')
 
-        # Stage 2: Train on full multi-class dataset
-        with tf.device(device):
-            print(f"Training {self.model_name} on {device} for Stage 2 (full multi-class data)")
-            self.model.fit(data, labels, epochs=final_epochs, batch_size=batch_size)
+    # Flatten layer to 1D vector
+    self.flatten = tf.keras.layers.Flatten()
 
-    def save_model(self, file_path=None):
-        file_path = file_path or f"{self.model_name}.h5"
-        self.model.save(file_path)
+    # Produce routing probabilities for each expert model
+    self.dense = tf.keras.layers.Dense(64, activation='relu')
 
-    def load_model(self, file_path=None):
-        file_path = file_path or f"{self.model_name}.h5"
-        with custom_object_scope({'ExpertModel': ExpertModel}):
-            self.model = tf.keras.models.load_model(file_path)
+    # Output layer for probabilistic classification
+    self.output_layer = tf.keras.layers.Dense(4, activation='softmax')
 
-class AppleExpert(BaseExpert):
-    def __init__(self, gpu_train=False):
-        super().__init__("apple_expert", gpu_train)
+  def call(self, x):
+    x = self.conv1(x)
+    x = self.conv2(x)
+    x = self.conv3(x)
 
-class BananaExpert(BaseExpert):
-    def __init__(self, gpu_train=False):
-        super().__init__("banana_expert", gpu_train)
+    x = self.flatten(x)
 
-class OrangeExpert(BaseExpert):
-    def __init__(self, gpu_train=False):
-        super().__init__("orange_expert", gpu_train)
+    x = self.dense(x)
 
-class MangoExpert(BaseExpert):
-    def __init__(self, gpu_train=False):
-        super().__init__("mango_expert", gpu_train)
+    return self.output_layer(x)
+  
+  def compile(self, **kwargs):
+    # Set default optimizer, loss, and metric args
+    if 'optimizer' not in kwargs:
+        kwargs['optimizer'] = 'adam'
+    if 'loss' not in kwargs:
+        kwargs['loss'] = 'sparse_categorical_crossentropy'
+    if 'metrics' not in kwargs:
+        kwargs['metrics'] = ['accuracy']
+
+    # Call the parent compile method with updated kwargs
+    super(ExpertModel, self).compile(**kwargs)
+
