@@ -5,7 +5,14 @@ __model = None
 
 def get_fruit(img_input):
 
-    return __model.predict(img_input)
+    input_size = 97200
+
+    class_names = ['apples', 'banana', 'mango', 'orange']
+
+    prediction = np.argmax(__model.predict(np.array((img_input / 255).flatten()).reshape(1, -1)))
+    
+    return class_names[prediction]
+
 
 
 def load_saved_artifacts():
