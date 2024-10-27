@@ -2,7 +2,7 @@ from tensorflow.keras import layers, models
 import tensorflow as tf
 
 class ExpertModel(tf.keras.Model):
-    def __init__(self, trainable=True):
+    def __init__(self, trainable=True, **kwargs):
         super(ExpertModel, self).__init__()
 
         # Define input size
@@ -31,26 +31,16 @@ class ExpertModel(tf.keras.Model):
         x = self.dropout2(x)
         x = self.conv3(x)
         x = self.dropout3(x)
-
         x = self.flatten(x)
         x = self.dense(x)
         x = self.dropout4(x)
-
         return self.output_layer(x)
 
     def compile(self, **kwargs):
-        # Set default optimizer, loss, and metric args
         kwargs.setdefault('optimizer', 'adam')
         kwargs.setdefault('loss', 'sparse_categorical_crossentropy')
         kwargs.setdefault('metrics', ['accuracy'])
-
-        # Call the parent compile method with updated kwargs
         super(ExpertModel, self).compile(**kwargs)
 
     def get_config(self):
-        config = super(ExpertModel, self).get_config()
-        return config
-
-    @classmethod
-    def from_config(cls, config):
-        return cls(**config)
+        config = super(ExpertModel, self).get_c
