@@ -1,33 +1,76 @@
+from tensorflow.keras.callbacks import EarlyStopping
 from .expert_model import ExpertModel
 import tensorflow as tf
-from tensorflow.keras.callbacks import EarlyStopping
 
 class AppleExpert:
-  def __init__(self, gpu_train: bool = False):
-    self.model = ExpertModel()
-    self.model.compile()
-    self.gpu_train = gpu_train
+    def __init__(self, gpu_train: bool = False):
+        self.model = ExpertModel()
+        self.model.compile()
+        self.gpu_train = gpu_train
 
-  def train(self, data, labels, initial_epochs=5, final_epochs=10, batch_size=32):
-    device = '/GPU:0' if self.gpu_train and tf.config.list_physical_devices('GPU') else '/CPU:0'
-    early_stopping = EarlyStopping(monitor='loss', patience=3, restore_best_weights=True)
+    def train(self, data, labels, epochs, batch_size=32, callbacks=[]):
+        device = '/GPU:0' if self.gpu_train and tf.config.list_physical_devices('GPU') else '/CPU:0'
+        with tf.device(device):
+            print(f"Training AppleExpert on {device}")
+            self.model.fit(data, labels, epochs=epochs, batch_size=batch_size, callbacks=callbacks)
 
-    # Stage 1: Train on apple-specific data
-    with tf.device(device):
-      print(f"Training AppleExpert on {device} for Stage 1 (apple data only)")
-      apple_data = data[labels == 0]
-      apple_labels = labels[labels == 0]
-      self.model.fit(apple_data, apple_labels, epochs=initial_epochs, batch_size=batch_size, callbacks=[early_stopping])
+    def save_model(self, file_path="apple_expert.h5"):
+        self.model.save(file_path)
 
-    # Stage 2: Train on the full multi-class dataset
-    with tf.device(device):
-      print(f"Training AppleExpert on {device} for Stage 2 (full multi-class data)")
-      self.model.fit(data, labels, epochs=final_epochs, batch_size=batch_size, callbacks=[early_stopping])
+    def load_model(self, file_path="apple_expert.h5"):
+        self.model = tf.keras.models.load_model(file_path)
 
-  def save_model(self, file_path="apple_expert.h5"):
-    self.model.save(file_path)
+class BananaExpert:
+    def __init__(self, gpu_train: bool = False):
+        self.model = ExpertModel()
+        self.model.compile()
+        self.gpu_train = gpu_train
 
-  def load_model(self, file_path="apple_expert.h5"):
-    self.model = tf.keras.models.load_model(file_path)
+    def train(self, data, labels, epochs, batch_size=32, callbacks=[]):
+        device = '/GPU:0' if self.gpu_train and tf.config.list_physical_devices('GPU') else '/CPU:0'
+        with tf.device(device):
+            print(f"Training BananaExpert on {device}")
+            self.model.fit(data, labels, epochs=epochs, batch_size=batch_size, callbacks=callbacks)
 
-# Repeat for other expert classes: BananaExpert, OrangeExpert, MangoExpert
+
+    def save_model(self, file_path="banana_expert.h5"):
+        self.model.save(file_path)
+
+    def load_model(self, file_path="banana_expert.h5"):
+        self.model = tf.keras.models.load_model(file_path)
+
+class OrangeExpert:
+    def __init__(self, gpu_train: bool = False):
+        self.model = ExpertModel()
+        self.model.compile()
+        self.gpu_train = gpu_train
+
+    def train(self, data, labels, epochs, batch_size=32, callbacks=[]):
+        device = '/GPU:0' if self.gpu_train and tf.config.list_physical_devices('GPU') else '/CPU:0'
+        with tf.device(device):
+            print(f"Training OrangeExpert on {device}")
+            self.model.fit(data, labels, epochs=epochs, batch_size=batch_size, callbacks=callbacks)
+
+    def save_model(self, file_path="orange_expert.h5"):
+        self.model.save(file_path)
+
+    def load_model(self, file_path="orange_expert.h5"):
+        self.model = tf.keras.models.load_model(file_path)
+
+class MangoExpert:
+    def __init__(self, gpu_train: bool = False):
+        self.model = ExpertModel()
+        self.model.compile()
+        self.gpu_train = gpu_train
+
+    def train(self, data, labels, epochs, batch_size=32, callbacks=[]):
+        device = '/GPU:0' if self.gpu_train and tf.config.list_physical_devices('GPU') else '/CPU:0'
+        with tf.device(device):
+            print(f"Training MangoExpert on {device}")
+            self.model.fit(data, labels, epochs=epochs, batch_size=batch_size, callbacks=callbacks)
+
+    def save_model(self, file_path="mango_expert.h5"):
+        self.model.save(file_path)
+
+    def load_model(self, file_path="mango_expert.h5"):
+        self.model = tf.keras.models.load_model(file_path)
