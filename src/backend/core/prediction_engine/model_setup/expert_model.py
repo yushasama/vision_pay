@@ -1,9 +1,15 @@
-from tensorflow.keras import layers, models
 import tensorflow as tf
+layers = tf.keras.layers
+layers = tf.keras.models
 
 class ExpertModel(tf.keras.Model):
   def __init__(self):
     super(ExpertModel, self).__init__()
+
+    # Define input size
+    self.input_layer = layers.InputLayer(input_shape=
+      (224, 224, 3)
+    )
 
     # Convulation layers to extract features and patterns
     self.conv1 = tf.keras.layers.Conv2D(32, (3, 3), activation='relu')

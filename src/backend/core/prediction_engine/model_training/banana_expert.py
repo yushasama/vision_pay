@@ -1,28 +1,28 @@
 from backend.utils.data_transform import preprocess_image_with_crop
-from submodels import AppleExpert
+from submodels import BananaExpert
 from PIL import Image
 import numpy as np
 import os
 
 dataset_path = os.path.join(os.path.dirname(__file__), "../../../..", "model/dataset/apples")
 
-apple_data = []
+banana_data = []
 
 for filename in os.listdir(dataset_path):
   if filename.endswith(".jpg") or filename.endswith(".png"):
     img_path = os.path.join(dataset_path, filename)
     img_array = preprocess_image_with_crop(img_path, True)
 
-    apple_data.append(img_array)
+    banana_data.append(img_array)
 
 # Convert list of img data to numpy array
-apple_data = np.array(apple_data)
+banana_data = np.array(banana_data)
 
-apple_labels = np.full(
-  (apple_data.shape[0],),
-  0,
+banana_data = np.full(
+  (banana_data.shape[0],),
+  1,
   dtype=int
 )
 
-apple_expert = AppleExpert()
-apple_expert.save_model("apple_expert.h5")
+banana_expert = BananaExpert()
+banana_expert.save_model("banana_expert.h5")

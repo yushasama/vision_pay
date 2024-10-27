@@ -1,9 +1,14 @@
 import tensorflow as tf
+layers = tf.keras.layers
+layers = tf.keras.models
 
 class GatingNetwork(tf.keras.Model):
   def __init__(self):
     super(GatingNetwork, self).__init__()
 
+    self.input_layer = layers.InputLayer(input_shape=
+      (224, 224, 3)
+    )
     # Convulation layers to extract features and patterns
     self.conv1 = tf.keras.layers.Conv2D(16, (3,3), activation='relu')
     self.conv1 = tf.keras.layers.Conv2D(32, (3,3), activation='relu')

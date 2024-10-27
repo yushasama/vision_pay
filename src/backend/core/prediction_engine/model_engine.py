@@ -1,6 +1,6 @@
-from mixture_of_experts import MixtureOfExperts
-from gating_network import GatingNetwork
-from expert_model import ExpertModel
+from model_setup.mixture_of_experts import MixtureOfExperts
+from model_setup.gating_network import GatingNetwork
+from model_setup.expert_model import ExpertModel
 import numpy as np
 
 
@@ -13,8 +13,8 @@ import numpy as np
 # predicted_class_indices = np.argmax(predictions, axis=1)
 # predicted_labels = [class_labels[index] for index in predicted_class_indices]
 
-for i, label in enumerate(predicted_labels):
-    print(f"Input {i+1}: {label}")
+# for i, label in enumerate(predicted_labels):
+#     print(f"Input {i+1}: {label}")
 
 class ModelEngine:
   def __init__(self, num_classes: int = 4, epoch_count: int = 10, batch_size: int = 32):
