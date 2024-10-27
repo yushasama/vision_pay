@@ -4,6 +4,7 @@ import numpy as np
 __model = None
 
 def get_fruit(img_input):
+<<<<<<< HEAD
     # Add batch dimension and make prediction
     img_input = np.expand_dims(img_input, axis=0)
     prediction = __model.predict(img_input)
@@ -12,6 +13,18 @@ def get_fruit(img_input):
     fruits = ['apple', 'banana', 'mango', 'orange']
     predicted_index = np.argmax(prediction)
     return fruits[predicted_index]
+=======
+
+    input_size = 97200
+
+    class_names = ['apples', 'banana', 'mango', 'orange']
+
+    prediction = np.argmax(__model.predict(np.array((img_input / 255).flatten()).reshape(1, -1)))
+    
+    return class_names[prediction]
+
+
+>>>>>>> origin/main
 
 def load_saved_artifacts():
     print("loading saved artifacts...start")
